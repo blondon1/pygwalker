@@ -26,67 +26,15 @@ def get_metrics_datas(
     dataset: Union[DataFrame, Connector],
     metrics_name: str,
     field_map: Dict[str, str],
-    params: Optional[Dict[str, Any]] = None
+    params: Dict[str, Any] = {}
 ) -> List[Dict[str, Any]]:
     """
-    Example: get 1 day retention datas
-    ```python
-    from pygwalker_tools.metrics import get_metrics_datas
-    datas = get_metrics_datas(
-        dataset=dataset,
-        metrics_name="retention",
-        field_map={
-            "date": "your_date_field",
-            "user_id": "your_user_id_field",
-            "user_signup_date": "your_user_signup_date_field"
-        },
-        params={
-            "time_unit": "day",
-            "time_size": 1
-    )
-    ```
-    Available metrics:
-    - pv: Page Views
-        - fields: ['date']
-        - dimensions: ['date']
-        - params: []
-    - uv: User Views
-        - fields: ['date', 'user_id']
-        - dimensions: ['date']
-        - params: []
-    - mau: Monthly Active Users
-        - fields: ['date', 'user_id']
-        - dimensions: ['date']
-        - params: []
-    - retention: Retention
-        - fields: ['date', 'user_id', 'user_signup_date']
-        - dimensions: ['date']
-        - params: ['time_unit', 'time_size']
-    - new_user_count: New User Count
-        - fields: ['date', 'user_id', 'user_signup_date']
-        - dimensions: ['date']
-        - params: []
-    - active_user: Active User
-        - fields: ['date', 'user_id']
-        - dimensions: ['date']
-        - params: ['within_active_days']
-    - active_user_count: Active User Count
-        - fields: ['date', 'user_id']
-        - dimensions: ['date']
-        - params: ['within_active_days']
-    - user_churn_rate_base_active: User Churn Rate Base Active
-        - fields: ['date', 'user_id']
-        - dimensions: ['date']
-        - params: ['within_active_days']
+    Retrieves metrics data based on the specified parameters.
     """
     if isinstance(dataset, str):
         raise TypeError("Unsupported cloud dataset type")
 
-    if params is None:
-        params = {}
-
     parser = get_parser(dataset)
-
     sql = get_metrics_sql(
         name=metrics_name,
         field_map=field_map,
@@ -98,6 +46,7 @@ def get_metrics_datas(
         return parser._get_datas_by_sql(sql)
     else:
         return parser.get_datas_by_sql(sql)
+
 
 
 class MetricsChart:
