@@ -80,8 +80,12 @@ def get_metrics_datas(
         - dimensions: ['date']
         - params: ['within_active_days']
     """
+    def validate_dataset_type(dataset):
     if isinstance(dataset, str):
-        raise TypeError("Unsupported cloud dataset type")
+        raise TypeError("Dataset of type string is unsupported. Expected a DataFrame or Connector instance.")
+
+validate_dataset_type(dataset)
+
 
     if params is None:
         params = {}
