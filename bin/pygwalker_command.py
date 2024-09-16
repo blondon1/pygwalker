@@ -1,5 +1,6 @@
 from typing import Tuple
 import argparse
+from typing import Sequence
 
 from pygwalker.services.config import (
     reset_all_config,
@@ -58,7 +59,7 @@ login_parser = subparsers.add_parser(
 )
 
 
-def command_set_config(value: Tuple[str]):
+def command_set_config(value: Sequence[str]) -> None:
     config = dict(
         item.split('=')
         for item in value
